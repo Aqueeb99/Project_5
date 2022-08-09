@@ -1,10 +1,10 @@
 const userModel = require('../models/userModel')
-const validation = require('../validations/validation')
+//const validation = require('../validations/validation')
 const aws = require('./aws-work')
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
-const {isBodyEmpty,isValidS3Url,validateEmail, isValid, isValidMobileNo, isVerifyString,isValidJSONstr,acceptFileType,isEmpty}=require('../validations/validation')
+const {isBodyEmpty,validateEmail, isValid, isValidMobileNo, isVerifyString}=require('../validations/validation') //isValidS3Url,,isValidJSONstr,acceptFileType,isEmpty
 
 const {isValidRequest, isValidAddress, isValidFile, isValidObjectId, isValidPhone, isValidPassword, isValidString, isValidEmail, isValidPincode, removeSpaces} = require('../validations/userValidation')
 

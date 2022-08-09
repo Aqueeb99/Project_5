@@ -1,8 +1,8 @@
 const { isValidObjectId } = require('mongoose');
-const { findOneAndUpdate } = require('../models/productModel');
+//const { findOneAndUpdate } = require('../models/productModel');
 const productModel = require('../models/productModel');
-const { isValidAddress, isValidSize } = require('../validations/userValidation');
-const {isBodyEmpty,IsNumuric,removeSpaces,isValidS3Url,validateEmail,checkAllSizes, checkAllSizesForUpdate,isValid, isValidMobileNo, isVerifyString,isValidJSONstr,acceptFileType,isEmpty}=require('../validations/validation');
+const {isValidSize } = require('../validations/userValidation'); //isValidAddress,
+const {isBodyEmpty,IsNumuric,removeSpaces,checkAllSizes, checkAllSizesForUpdate,isValid,acceptFileType}=require('../validations/validation');   //isValidS3Url,validateEmail, isValidMobileNo, isVerifyString,isValidJSONstr,isEmpty
 const { uploadFile } = require('./aws-work');
 
 
@@ -35,6 +35,7 @@ let createProduct = async function(req,res){
     if(currencyId || currencyId == ''){
         if(!isValid(currencyId)) return res.status(400).send({status:false, message:"CurrencyId tag is Required"}) 
         if(currencyId.toUpperCase()!="INR") return res.status(400).send({status:false, message:"Please provide currencyId only 'INR'"}) 
+        currencyId = currencyId.toUpperCase()
     }
    
    if(currencyFormat || currencyFormat==''){
