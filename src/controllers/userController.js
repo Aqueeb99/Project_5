@@ -1,30 +1,24 @@
 const userModel = require('../models/userModel')
-//const validation = require('../validations/validation')
 const aws = require('./aws-work')
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
-const {isBodyEmpty,validateEmail, isValid, isValidMobileNo, isVerifyString}=require('../validations/validation') //isValidS3Url,,isValidJSONstr,acceptFileType,isEmpty
+const {isBodyEmpty,validateEmail, isValid, isValidMobileNo, isVerifyString}=require('../validations/validation') 
 
 const {isValidRequest, isValidAddress, isValidFile, isValidObjectId, isValidPhone, isValidPassword, isValidString, isValidEmail, isValidPincode, removeSpaces} = require('../validations/userValidation')
 
 
-// const encryption = require('./encryption')
+
 
 // user register API 
 let register = async function (req, res) {
 
     try {
         let data = req.body;
-        // console.log(req.body)
-       
-        // let data = JSON.parse(JSON.)
-
-      
+          
         if (isBodyEmpty(data)) return res.send({ status: false, message: "Please provide required data" });
         const { fname, lname, email, phone, password, address } = data
-        // console.log(address)
-
+     
         if (!isValid(fname)) return res.status(400).send({ status: false, message: "fname tag is required" })
         if (isVerifyString(fname)) return res.status(400).send({ status: false, message: "Please provide valid fname" })
 
@@ -255,11 +249,7 @@ const updateUser = async function (req, res) {
         }
     }
 
-    // profile image ka krna hai validation - done
-
-
-
-    if (files && files.length > 0) {
+      if (files && files.length > 0) {
         if (!isValidFile(files)) {
             return res.status(400).send({status: false, message: "please send a valid photo file"})
         } else {
@@ -289,8 +279,6 @@ const updateUser = async function (req, res) {
         }
     }
 
-    // check password with bcrypt 
-
     let address1 = null;
     if (address) {
         console.log(address)
@@ -300,10 +288,7 @@ const updateUser = async function (req, res) {
                res.status(400).send({status:false, message:"address is not in JSON or may be Pincode Invalid"})
          }
        
-         address1 = JSON.parse(address)
-        // let address1 = address
-        console.log(address1)
-     
+         address1 = JSON.parse(address)  
 
         let findAddress = await userModel.findOne({ _id: userId })
 

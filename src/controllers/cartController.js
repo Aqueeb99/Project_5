@@ -3,7 +3,7 @@ const {  isValidObjectId,  } = require('../validations/userValidation')
 const userModel = require('../models/userModel')
 const productModel = require('../models/productModel')
 const cartModel = require('../models/cartModel')
-//const orderModel = require('../models/orderModel')
+
 
 // ===============================================================================================================================================
 //                                                            ⬇️  CREATE CART API ⬇️
@@ -132,9 +132,7 @@ let updateCart = async function (req, res) {
 
 
     let totalItems = isCartIdExist.totalItems;
-    console.log(totalItems)
     let totalPrice = isCartIdExist.totalPrice
-    console.log(totalPrice)
 
     let allItems = isCartIdExist.items;
 
@@ -144,9 +142,6 @@ let updateCart = async function (req, res) {
     if (!specificProductInItems) return res.status(404).send({ status: false, message: "product doesn't exists" });
     let index = allItems.indexOf(specificProductInItems);
   
-
-
-
     if (removeProduct == 0) {
 
       let total = isCartIdExist.totalPrice - (isProductIdExist.price * isCartIdExist.items[index].quantity)
@@ -155,8 +150,6 @@ let updateCart = async function (req, res) {
       isCartIdExist.totalItems = totalItems - 1;
 
     }
-
-
 
     if (removeProduct == 1) {
 

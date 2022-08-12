@@ -1,8 +1,7 @@
 const { isValidObjectId } = require('mongoose');
-//const { findOneAndUpdate } = require('../models/productModel');
 const productModel = require('../models/productModel');
-const {isValidSize } = require('../validations/userValidation'); //isValidAddress,
-const {isBodyEmpty,IsNumuric,removeSpaces,checkAllSizes, checkAllSizesForUpdate,isValid,acceptFileType}=require('../validations/validation');   //isValidS3Url,validateEmail, isValidMobileNo, isVerifyString,isValidJSONstr,isEmpty
+const {isValidSize } = require('../validations/userValidation'); 
+const {isBodyEmpty,IsNumuric,removeSpaces,checkAllSizes, checkAllSizesForUpdate,isValid,acceptFileType}=require('../validations/validation');  
 const { uploadFile } = require('./aws-work');
 
 
@@ -13,9 +12,7 @@ const { uploadFile } = require('./aws-work');
 let createProduct = async function(req,res){
 
     try{
-    // let data = JSON.parse(JSON.stringify(req.body));
-    let data = req.body
-
+       let data = req.body
     // check body is empty or not
     if(isBodyEmpty(data)) return res.status(400).send({status:false, message:"Please provide required Data"}) 
 
@@ -46,7 +43,6 @@ let createProduct = async function(req,res){
 
     if(isFreeShipping || isFreeShipping==''){
         let boolArr = ["true", "false"]
-        // if(typeof isFreeShipping != 'Boolean') 
         if(!boolArr.includes(isFreeShipping)) return res.status(400).send({status:false, message:"isFreeShipping type must be boolean"}) 
     }
 
@@ -65,26 +61,17 @@ let createProduct = async function(req,res){
     availableSizes = [...allSizes]
     }
 
-
-
    if(!bool) return res.status(400).send({ status:false, Message: 'available size should be in uppercase and accepted sizes are: ["S", "XS", "M", "X", "L", "XXL", "XL"] !' })
 
    if(installments){
     if(!isValid(installments)) return res.status(400).send({status:false, message:"installments tag is required"}) 
     if(!IsNumuric(installments)) return res.status(400).send({status:false, message:"installments must be number"})
    }
-   
-
-
-
-
-   // files concept here
 
    let files = req.files;
    if(files.length==0) return res.status(400).send({ status: !true, message: "productImage is required" })
    if(!acceptFileType(files[0],'image/jpeg', 'image/png'))  return res.status(400).send({ status: false, message: "we accept jpg, jpeg or png as product image only" })
    let myUrl = await uploadFile(files[0]);
-//    console.log(myUrl);
    productImage=myUrl;
 
 
@@ -121,12 +108,11 @@ const getProduct = async function (req, res) {
         let findTitle = await productModel.find()
         let fTitle = findTitle.map(x => x.title).filter(x => x.includes(name))
 
-        filters.title = {$in : fTitle} // title me agar is array elements me se kuch bhi milra ho na to le aao 
+        filters.title = {$in : fTitle} 
     }
 
     if (size) {
         let size1 = size.split(",").map(x => x.trim().toUpperCase())
-        //-----------------------------------explain
         if (size1.map(x => isValidSize(x)).filter(x => x === false).length !== 0) return res.status(400).send({ status: false, message: "Size Should be among  S,XS,M,X,L,XXL,XL" })
         filters.availableSizes = { $in: size1 }
     }
@@ -202,7 +188,6 @@ let updateProduct = async function(req,res){
         let data = JSON.parse(JSON.stringify(req.body));
         let files = req.files;
 
-        // if(isBodyEmpty(data)) return res.status(400).send({status:false, message:"please provide some data for filteration"});
 
         if (isBodyEmpty(req.body) && files == undefined) {
             return res.status(400).send({ status: false, message: "please provide some data for filteration" })
